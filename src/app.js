@@ -18,6 +18,8 @@ app.use("/api/v1/books", bookRouter);
 
 // http://localhost:8000/api/v1/books my url
 
+import userRouter from "./routes/user.routes.js";
+app.use("/api/v1/users", userRouter);
 
 export {app};
 

@@ -13,6 +13,9 @@ const createBook = asyncHandler(async (req, res,) => {
         throw new ApiError(400, "please enter book full details");
 
     }
+    if (!req.user) {
+        throw new ApiError(401, "Unauthorized: User not logged in");
+    }
 
     const exitingBook = await Book.findOne({ title });
     if (exitingBook) {
@@ -39,6 +42,7 @@ const createBook = asyncHandler(async (req, res,) => {
         price,
         description,
         image: bookImage.url,
+        user: req.user._id
     });
     const createBook = await Book.findById(book._id);
     if (!createBook) {
@@ -53,7 +57,7 @@ const createBook = asyncHandler(async (req, res,) => {
 // get all books 
  
 const getAllBooks = asyncHandler(async (req, res) => {
-    const books = await Book.find();
+    const books = await Book.find().populate("user", "fullname email");
     return res
         .status(200)
         .json(new ApiResponse(200, books, "All books fetched successfully"));
@@ -119,4 +123,4 @@ const updateBookDetails = asyncHandler(async (req, res) => {
 
 
 
-export { createBook , getAllBooks, deleteBook, updateBookDetails ,};
+export { createBook , getAllBooks, deleteBook, updateBookDetails };

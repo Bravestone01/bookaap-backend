@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createBook, getAllBooks, deleteBook ,updateBookDetails } from "../controllers/book.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import {protect} from "../middlewares/auth.middleware.js"
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.post("/upload", (req, res, next) => {
         }
         next();
     });
-}, createBook);
+}, protect, createBook);
 
 router.get("/allbooks", getAllBooks);
 router.delete("/delete/:id", deleteBook);
